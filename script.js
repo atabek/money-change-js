@@ -8,7 +8,7 @@ var output = "";
 
 // gets how many of each note cashier should return
 var getNofSpecificNote = function(amount, note){
-  amount_left = amount%note;
+  amount_left = amount % note;
   return {
     remainder: amount_left,
     quotient: Math.floor(amount/note)
@@ -18,23 +18,21 @@ var getNofSpecificNote = function(amount, note){
 // multiplies the notes array by 2, to make 0.5 => 1 so it
 // can be used in 'ways' function
 var newNotes = notes.map(function(value) {
-  return value*2
+  return value * 2
 })
 
 // returns possible ways a cashier can return the change
-// reference: 
+// reference:
 //https://github.com/mission-peace/interview/blob/master/src/com/interview/dynamic/CoinChanging.java
 var ways = function(amount_left, newNotes) {
   amount = amount_left * 2
   var temp = new Array(amount + 1).fill(0);
   temp[0] = 1;
-  for(i = 0; i < newNotes.length; i++){
-      for(j = 1; j <= amount ; j++){
-          if(j >= newNotes[i]){
-              temp[j] += temp[j - newNotes[i]];
-          }
-      }
-  }
+  newNotes.sort(function(a, b){return a-b}).forEach(function(value, key) {
+    for(j = 1; j <= amount; j++) {
+      if(j >= value) temp[j] += temp[j - value];
+    }
+  });
   return temp[amount];
 }
 var numberOfWays = ways(amount_left, newNotes);
@@ -42,10 +40,9 @@ var numberOfWays = ways(amount_left, newNotes);
 // loop through the notes array to call getNofSpecificNote function
 notes.forEach(function(value, key) {
   var result = getNofSpecificNote(amount_left, value);
-  if(result.quotient) {
-    output += result.quotient + "som: " + value + '\n';
-  }
+  if(result.quotient) output += result.quotient + ": " + value + 'som\n';
 })
-output = output + "berishin kerek" + "\n" + numberOfWays + " jol menen berse bolot."
+output = output + "berishin kerek" + "\n" +
+         numberOfWays + " jol menen berse bolot."
 console.log(output);
 alert(output);
