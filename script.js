@@ -15,16 +15,31 @@ var getNofSpecificNote = function(amount, note){
   };
 }
 
-notes.forEach(function(value, key) {
-  var result = getNofSpecificNote(amount_left, value);
-  if(result.quotient) {
-    output += result.quotient + " " + value + '\n';
-  }
-})
-console.log(output + "berishin kerek");
-
 var newNotes = notes.map(function(value) {
   return value*2
 })
 
-console.log(newNotes)
+var ways = function(amount_left, newNotes) {
+  amount = amount_left * 2
+  var temp = new Array(amount + 1).fill(0);
+  temp[0] = 1;
+  for(i = 0; i < newNotes.length; i++){
+      for(j = 1; j <= amount ; j++){
+          if(j >= newNotes[i]){
+              temp[j] += temp[j - newNotes[i]];
+          }
+      }
+  }
+  return temp[amount];
+}
+var numberOfWays = ways(amount_left, newNotes);
+
+notes.forEach(function(value, key) {
+  var result = getNofSpecificNote(amount_left, value);
+  if(result.quotient) {
+    output += result.quotient + "som: " + value + '\n';
+  }
+})
+output = output + "berishin kerek" + "\n" + numberOfWays + " jol menen berse bolot."
+console.log(output);
+alert(output);
